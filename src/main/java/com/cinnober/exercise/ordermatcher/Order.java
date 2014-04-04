@@ -103,6 +103,13 @@ public class Order {
         this.quantity = quantity;
     }
 
+    public void decreaseQuantity(long amount) {
+        if (amount > quantity) {
+            throw new IllegalArgumentException();
+        }
+        this.quantity -= amount;
+    }
+
     /**
      * Returns true if the quantity is zero.
      * @return true if the quantity is zero, otherwise false.

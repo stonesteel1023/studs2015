@@ -106,6 +106,22 @@ public class OrderMatcher {
     }
 
     /**
+     * Create a trade between the orders. 
+     * As much quantity as possible is traded. 
+     * The order quantities is decreased, and at least one of the orders will become empty.
+     * 
+     * @param activeOrder the active order, not null
+     * @param passiveOrder the passive order, not null.
+     * @return 
+     */
+    private Trade trade(Order activeOrder, Order passiveOrder) {
+        long qty = Math.min(activeOrder.getQuantity(), passiveOrder.getQuantity());
+        activeOrder.decreaseQuantity(qty);
+        passiveOrder.decreaseQuantity(qty);
+        return new Trade(activeOrder.getId(), passiveOrder.getId(), passiveOrder.getPrice(), qty);
+    }
+
+    /**
      * Returns all remaining orders in the order book, in priority order, for the specified side.
      *
      * <p>Priority for buy orders is defined as highest price, followed by time priority (first come, first served).
