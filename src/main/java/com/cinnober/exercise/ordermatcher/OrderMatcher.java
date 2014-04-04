@@ -60,6 +60,10 @@ public class OrderMatcher {
 
     private final LinkedList<Order> buyOrders = new LinkedList<>();
     private final LinkedList<Order> sellOrders = new LinkedList<>();
+    private static final Comparator<Order> buyComparator =
+            (o1, o2) -> -Long.compare(o1.getPrice(), o2.getPrice());
+    private static final Comparator<Order> sellComparator =
+            (o1, o2) -> Long.compare(o1.getPrice(), o2.getPrice());
 
     /**
      * Create a new order matcher.
@@ -80,14 +84,17 @@ public class OrderMatcher {
 
         LinkedList<Order> oppositeOrders;
         LinkedList<Order> sameOrders;
+        Comparator<Order> cmp;
         switch (order.getSide()) {
             case BUY:
                 sameOrders = buyOrders;
                 oppositeOrders = sellOrders;
+                cmp = buyComparator;
                 break;
             case SELL:
                 sameOrders = sellOrders;
                 oppositeOrders = buyOrders;
+                cmp = sellComparator;
                 break;
             default:
                 throw new IllegalArgumentException("Illegal side");
