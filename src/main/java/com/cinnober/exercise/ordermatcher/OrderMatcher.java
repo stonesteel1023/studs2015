@@ -101,13 +101,21 @@ public class OrderMatcher {
         }
 
         List<Trade> trades = new LinkedList<>();
-        // TODO: match against opposite side
+        // match against opposite side
+        Order other;
+        while ((other=oppositeOrders.peekFirst()) != null && cmp.compare(order, other) <= 0) {
+            trades.add(trade(order, other));
+            if (other.isEmpty()) {
+                oppositeOrders.removeFirst();
+            } else {
+                break;
+            }
+        }
         if (order.isEmpty()) {
             return trades;
         }
 
         // put order into the order book
-        Order other;
         for (ListIterator<Order> it = sameOrders.listIterator(); it.hasNext();) {
             other = it.next();
             if (cmp.compare(order, other) < 0) {
