@@ -74,7 +74,35 @@ public class OrderMatcher {
      * @return any trades that were created by this order, not null.
      */
     public List<Trade> addOrder(Order order) {
-        throw new UnsupportedOperationException("addOrder is not implemented yet"); // FIXME
+        if (order.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        LinkedList<Order> oppositeOrders;
+        LinkedList<Order> sameOrders;
+        switch (order.getSide()) {
+            case BUY:
+                sameOrders = buyOrders;
+                oppositeOrders = sellOrders;
+                break;
+            case SELL:
+                sameOrders = sellOrders;
+                oppositeOrders = buyOrders;
+                break;
+            default:
+                throw new IllegalArgumentException("Illegal side");
+        }
+
+        List<Trade> trades = new LinkedList<>();
+        // TODO: match against opposite side
+        if (order.isEmpty()) {
+            return trades;
+        }
+
+        // put order into the order book
+        // TODO: keep the order list sorted, insert it into the right place!
+        sameOrders.add(order);
+        return trades;
     }
 
     /**
