@@ -107,7 +107,14 @@ public class OrderMatcher {
         }
 
         // put order into the order book
-        // TODO: keep the order list sorted, insert it into the right place!
+        Order other;
+        for (ListIterator<Order> it = sameOrders.listIterator(); it.hasNext();) {
+            other = it.next();
+            if (cmp.compare(order, other) < 0) {
+                sameOrders.add(it.previousIndex(), order);
+                return trades;
+            }
+        }
         sameOrders.add(order);
         return trades;
     }
