@@ -20,7 +20,11 @@ package com.cinnober.exercise.ordermatcher;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Order book with continuous matching of limit orders with time priority.
@@ -53,12 +57,16 @@ import java.util.List;
  */
 public class OrderMatcher {
 
+
+    private final LinkedList<Order> buyOrders = new LinkedList<>();
+    private final LinkedList<Order> sellOrders = new LinkedList<>();
+
     /**
      * Create a new order matcher.
      */
     public OrderMatcher() {
     }
-    
+
     /**
      * Add the specified order to the order book.
      *
@@ -79,7 +87,14 @@ public class OrderMatcher {
      * @return all remaining orders in the order book, in priority order, for the specified side, not null.
      */
     public List<Order> getOrders(Side side) {
-        throw new UnsupportedOperationException("getOrders is not implemented yet"); // FIXME
+        switch(side) {
+            case BUY:
+                return buyOrders;
+            case SELL:
+                return sellOrders;
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
 
